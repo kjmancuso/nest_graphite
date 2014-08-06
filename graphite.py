@@ -34,7 +34,9 @@ def main():
         r = requests.get(WEATHER_URL % zipcode)
         wdata = r.json()
         outer_temp = wdata[zipcode]['current']['temp_f']
+        outer_humidity = wdata[zipcode]['current']['humidity']
         c.send(('nest', s_name, 'outside_temp'), outer_temp)
+        c.send(('nest', s_name, 'outside_humidity'), outer_humidity)
         for d in s.devices:
             d_name = d.name.lower()
             c.send(('nest', s_name, d_name, 'temperature'), ctf(d.temperature))
