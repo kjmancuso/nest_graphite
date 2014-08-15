@@ -40,7 +40,11 @@ def main():
         for d in s.devices:
             d_name = d.name.lower()
             c.send(('nest', s_name, d_name, 'temperature'), ctf(d.temperature))
-            c.send(('nest', s_name, d_name, 'target'), ctf(d.target))
+            if d.mode == u'range':
+                c.send(('nest', s_name, d_name, 'target_low'), ctf(d.target[0]))
+                c.send(('nest', s_name, d_name, 'target_high'), ctf(d.target[1]))
+            else:
+                c.send(('nest', s_name, d_name, 'target'), ctf(d.target))
             c.send(('nest', s_name, d_name, 'humidity'), d.humidity)
     # Flush data
     c.stop()
